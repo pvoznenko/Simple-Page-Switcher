@@ -6,7 +6,7 @@
 			'perPage'     : 4,
             'cssClassRow' : 'another-row-class',
 			'arrowLeft'   : '<',
-            'arrowRight'  : '<img src="http://ui-dev.jquery.com/images/demo-spindown-closed.gif"/>'
+            'arrowRight'  : '<img src="http://ui-dev.jquery.com/images/demo-spindown-closed.gif" />'
 		});
 	});
 </script>
@@ -33,7 +33,7 @@
 </div>
 
 <h4>Example 3</h4>
-<p>This example should show 4 rows with class "another-row-class" per page. Left arrow should be "<" and right - image "&lt;img src=&quot;http://ui-dev.jquery.com/images/demo-spindown-closed.gif&quot;&frasl;&gt;"</p>
+<p>This example should show 4 rows with class "another-row-class" per page. Left arrow should be "<" and right - image "&lt;img src=&quot;http://ui-dev.jquery.com/images/demo-spindown-closed.gif&quot;&frasl;&gt;" </p>
 <div id="test-example3">
 	<div class="another-row-class">Row 1</div>
 	<div class="another-row-class">Row 2</div>
