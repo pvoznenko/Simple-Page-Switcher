@@ -1,25 +1,30 @@
 /**
- * jQuery SimplePaging plugin
+ * jQuery Simple Page Switcher plugin version: 1.0.1, date: 10/10/2011
  *
  * Copyright (c) 2011 Pavel Voznenko (p.voznenko@gmail.com)
- * https://github.com/fosco-maestro/simplePaging-Plugin
+ * https://github.com/fosco-maestro/Simple-Page-Switcher
+ * http://plugins.jquery.com/project/simple-page-switcher
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
  *
  */
 (function( $, undefined ) {
-    $.fn.simplePagingPlugin = function( options ) {
+    $.fn.simplePageSwitcher = function( options ) {
         var settings = {
-            'perPage'       : 5,
-            'cssClassRow'   : 'spp-block-row',
-            'cssClassLeft'  : 'spp-go-left',
-            'cssClassRight' : 'spp-go-right',
-            'cssClassFirst' : 'spp-go-first',
-            'cssClassLast'  : 'spp-go-last',
-            'cssClassMain'  : 'spp-block',
-            'arrowLeft'     : '\u2190',
-            'arrowRight'    : '\u2192'
+            'perPage'        : 5,
+            'effectDuration' : 'slow',
+            'effectFade'     : false,
+            'effects'        : false,
+            'effectOnStart'  : false,
+            'cssClassRow'    : 'spp-block-row',
+            'cssClassLeft'   : 'spp-go-left',
+            'cssClassRight'  : 'spp-go-right',
+            'cssClassFirst'  : 'spp-go-first',
+            'cssClassLast'   : 'spp-go-last',
+            'cssClassMain'   : 'spp-block',
+            'arrowLeft'      : '\u2190',
+            'arrowRight'     : '\u2192'
         },
         $this = $( this );
                         
@@ -37,6 +42,10 @@
                             settings.perPage = options; 
                             break;
                     }
+                    
+                    if ( !settings.effects && !settings.effectFade ) {
+                        settings.effectDuration = false;
+                    }
                 }
                 return true;
             },
@@ -48,18 +57,39 @@
                         'to'   : settings.perPage
                     };
                 }
+                if ( !settings.effectOnStart ) {
+                    var tmpEffectFade = [settings.effectFade, settings.effectFade = false][0],
+                        tmpEffectDuration = [settings.effectDuration, settings.effectDuration = false][0]; 
+                }
                 for ( var i = options.from; i < options.to; i++ ) {
                     if ( elObj[i] !== undefined ) {
-                        $( elObj[i] ).show();
+                        if ( settings.effectFade ) {
+                            $( elObj[i] ).fadeIn( settings.effectDuration );
+                        }
+                        $( elObj[i] ).show( settings.effectDuration );
                     }
                 }
+                if ( !settings.effectOnStart ) {
+                    settings.effectFade = tmpEffectFade;
+                    settings.effectDuration = tmpEffectDuration;
+                    settings.effectOnStart = true;
+                }
+                
             }
         };
                     
         methods.init( options );  
                         
-        var elObj = $( '.' + settings.cssClassRow, $this ),
-        elCount = elObj.length;
+        var elObj = $( '.' + settings.cssClassRow, $this );
+        
+        if ( elObj.length == 0 ) {
+            elObj = $this.children();
+            if ( $this[0].tagName == 'TABLE' ) {
+                elObj = elObj.find('tr');
+            }
+        }
+        
+        var elCount = elObj.length;
                         
         if ( elCount > settings.perPage ) {
             var pages = elCount % settings.perPage == 0 ? elCount / settings.perPage : parseInt( elCount / settings.perPage ) + 1;
